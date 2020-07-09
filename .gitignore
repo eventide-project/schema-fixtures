@@ -1,0 +1,6 @@
+.bundle/
+Gemfile.lock
+*.gem
+gems
+*sketch*
+*notes.*
