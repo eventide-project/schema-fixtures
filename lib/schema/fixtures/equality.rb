@@ -7,54 +7,48 @@ module Schema
       initializer :control, :compare
 
       def call()
-        control_class = control.class
-        compare_class = compare.class
+        comparison = Schema::Compare.(control, compare)
 
-        control_class_name = control_class.name.split('::').last
-        compare_class_name = compare_class.name.split('::').last
+        control_class = comparison.control_class
+        compare_class = comparison.compare_class
 
-        attribute_names = control_class.attribute_names
-
-
-##
-        attribute_names = attribute_names.map do |attribute_name|
-          { attribute_name => attribute_name }
-        end
-##
-
-
-        context "Schema Equality: #{control_class_name}, #{compare_class_name}" do
+        context "Schema Equality: #{control_class.type}, #{compare_class.type}" do
 
           verbose "Control Class: #{control_class.name}"
           verbose "Compare Class: #{compare_class.name}"
 
-          attribute_names.each do |attribute_name|
+          comparison.entries.each do |entry|
 
-            if attribute_name.is_a? Hash
-              control_attribute, compare_attribute = attribute_name.keys.first, attribute_name.values.first
-            else
-              control_attribute, compare_attribute = attribute_name, attribute_name
-            end
+            printed_attribute_name = self.class.printed_attribute_name(entry)
 
-            control_attribute_value = control.public_send(control_attribute)
-            compare_attribute_value = compare.public_send(compare_attribute)
-
-            display_attribute_value = "#{control_attribute_value.inspect} == #{compare_attribute_value.inspect}"
-
-            display_attribute_name = attribute_name.to_s
-            display_attribute_name.delete!(':{}')
-
-            display_attribute_name.gsub!('=>', ' == ')
-
-            context "#{display_attribute_name}" do
-              verbose "#{display_attribute_value}"
+            context printed_attribute_name do
 
               assert do
-                comment "#{compare_attribute_value.inspect} == #{control_attribute_value.inspect}"
+
+                control_attribute_value = entry.control_value
+                compare_attribute_value = entry.compare_value
+
+# Uncomment to cause block form failure, and display of comments
+# compare_attribute_value = nil
+
+                comment "Control Value: #{control_attribute_value.inspect}"
+                comment "Compare Value: #{compare_attribute_value.inspect}"
+
                 assert(compare_attribute_value == control_attribute_value)
               end
             end
           end
+        end
+      end
+
+      def self.printed_attribute_name(entry)
+        control_name = entry.control_name
+        compare_name = entry.compare_name
+
+        if control_name == compare_name
+          return control_name
+        else
+          return "#{control_name} (=> #{compare_name})"
         end
       end
     end
