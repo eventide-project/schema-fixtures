@@ -6,3 +6,5 @@ require 'schema/fixtures/controls'
 require 'pp'
 
 require 'test_bench'; TestBench.activate
+
+include Schema::Fixtures
