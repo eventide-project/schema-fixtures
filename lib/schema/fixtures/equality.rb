@@ -7,6 +7,8 @@ module Schema
       initializer :control, :compare
 
       def call()
+        comparison = Schema::Compare.(control, compare)
+
         control_class = control.class
         compare_class = compare.class
 
@@ -23,8 +25,6 @@ module Schema
 ##
 
 
-        # context "Attribute Equality: #{control_class_name} -> #{compare_class_name}" do
-        # context "Attribute Equality: #{control_class_name}, #{compare_class_name}" do
         context "Schema Equality: #{control_class_name}, #{compare_class_name}" do
 
           verbose "Control Class: #{control_class.name}"
@@ -41,16 +41,15 @@ module Schema
             control_attribute_value = control.public_send(control_attribute)
             compare_attribute_value = compare.public_send(compare_attribute)
 
-            # display_attribute_value = "#{control_attribute_value.inspect} -> #{compare_attribute_value.inspect}"
             display_attribute_value = "#{control_attribute_value.inspect} == #{compare_attribute_value.inspect}"
 
             display_attribute_name = attribute_name.to_s
             display_attribute_name.delete!(':{}')
 
-            # display_attribute_name.gsub!('=>', ' -> ')
             display_attribute_name.gsub!('=>', ' == ')
 
-            context "#{display_attribute_name} (#{display_attribute_value})" do
+            context "#{display_attribute_name}" do
+              verbose "#{display_attribute_value}"
               assert(compare_attribute_value == control_attribute_value)
             end
           end
