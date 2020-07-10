@@ -48,7 +48,11 @@ module Schema
 
             context "#{display_attribute_name}" do
               verbose "#{display_attribute_value}"
-              assert(compare_attribute_value == control_attribute_value)
+
+              assert do
+                comment "#{compare_attribute_value.inspect} == #{control_attribute_value.inspect}"
+                assert(compare_attribute_value == control_attribute_value)
+              end
             end
           end
         end
@@ -56,32 +60,3 @@ module Schema
     end
   end
 end
-
-__END__
-
-      module Test
-        class Class
-          include Initializer
-
-          initializer(
-            :control_class,
-            :compare_class
-          )
-
-          def self.build(control, compare)
-
-            instance = new(control.class)
-
-
-            instance
-          end
-
-          def self.call(control, compare)
-            instance = build(control, compare)
-            instance.()
-          end
-        end
-
-        class Attribute
-        end
-      end
