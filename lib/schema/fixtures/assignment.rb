@@ -25,7 +25,7 @@ module Schema
 
               test "#{entry.compare_name}" do
                 detail "Default Value: #{default_attribute_value.inspect}"
-                detail "Value: #{attribute_value.inspect}"
+                detail "Assigned Value: #{attribute_value.inspect}"
 
                 refute(attribute_value == default_attribute_value)
               end
