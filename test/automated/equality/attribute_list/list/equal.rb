@@ -5,7 +5,7 @@ context "Equality" do
     context "List" do
       context "Equal" do
         control = Controls::Schema.example
-        compare = Controls::Schema.other_example
+        compare = Controls::Schema.example
 
         control_name = :some_attribute
 

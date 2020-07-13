@@ -4,12 +4,16 @@ module Schema
       include TestBench::Fixture
       include Initializer
 
-      initializer :comparison
+      def ignore_class?
+        @ignore_class ||= false
+      end
 
-      def self.build(control, compare, attribute_names=nil)
+      initializer :comparison, na(:ignore_class)
+
+      def self.build(control, compare, attribute_names=nil, ignore_class: nil)
         comparison = Schema::Compare.(control, compare, attribute_names)
 
-        new(comparison)
+        new(comparison, ignore_class)
       end
 
       def call()
@@ -20,6 +24,14 @@ module Schema
 
           detail "Control Class: #{control_class.name}"
           detail "Compare Class: #{compare_class.name}"
+
+          if not ignore_class?
+            test "Classes are the same" do
+              assert(control_class == compare_class)
+            end
+          else
+            comment 'Class comparison is ignored'
+          end
 
           comparison.entries.each do |entry|
 

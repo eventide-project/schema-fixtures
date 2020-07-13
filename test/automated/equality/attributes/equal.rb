@@ -1,9 +1,9 @@
-require_relative '../automated_init'
+require_relative '../../automated_init'
 
 context "Equality" do
   context "Equal" do
     control = Controls::Schema.example
-    compare = Controls::Schema.other_example
+    compare = Controls::Schema.example
 
     fixture = Equality.build(control, compare)
     fixture.()
