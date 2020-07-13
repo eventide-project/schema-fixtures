@@ -12,7 +12,6 @@ module Schema
 
       def self.build(control, compare, attribute_names=nil, ignore_class: nil)
         comparison = Schema::Compare.(control, compare, attribute_names)
-
         new(comparison, ignore_class)
       end
 
