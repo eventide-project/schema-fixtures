@@ -21,7 +21,6 @@ module Schema
         compare_class = comparison.compare_class
 
         context "Schema Equality: #{control_class.type}, #{compare_class.type}" do
-
           detail "Control Class: #{control_class.name}"
           detail "Compare Class: #{compare_class.name}"
 
@@ -33,35 +32,21 @@ module Schema
             comment 'Class comparison is ignored'
           end
 
-          comparison.entries.each do |entry|
+          context "Attributes" do
+            comparison.entries.each do |entry|
+              printed_attribute_name = Attribute.printed_name(entry)
 
-            printed_attribute_name = self.class.printed_attribute_name(entry)
+              control_attribute_value = entry.control_value
+              compare_attribute_value = entry.compare_value
 
-            test printed_attribute_name do
-
-              assert do
-
-                control_attribute_value = entry.control_value
-                compare_attribute_value = entry.compare_value
-
-                comment "Control Value: #{control_attribute_value.inspect}"
-                comment "Compare Value: #{compare_attribute_value.inspect}"
+              test printed_attribute_name do
+                detail "Control Value: #{control_attribute_value.inspect}"
+                detail "Compare Value: #{compare_attribute_value.inspect}"
 
                 assert(compare_attribute_value == control_attribute_value)
               end
             end
           end
-        end
-      end
-
-      def self.printed_attribute_name(entry)
-        control_name = entry.control_name
-        compare_name = entry.compare_name
-
-        if control_name == compare_name
-          return control_name.to_s
-        else
-          return "#{control_name} => #{compare_name}"
         end
       end
     end
