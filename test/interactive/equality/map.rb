@@ -10,6 +10,6 @@ context "Equality" do
       { :some_other_attribute => :yet_another_attribute }
     ]
 
-    fixture(Equality, control, compare, map)
+    fixture(Equality, control, compare, map, ignore_class: true)
   end
 end

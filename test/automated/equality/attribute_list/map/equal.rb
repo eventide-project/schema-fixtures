@@ -14,8 +14,16 @@ context "Equality" do
           { control_name => compare_name }
         ]
 
-        fixture = Equality.build(control, compare, map)
+        fixture = Equality.build(control, compare, map, ignore_class: true)
         fixture.()
+
+        context "Classes are the same" do
+          tested = fixture.test_session.test?('Classes are the same')
+
+          test "Not tested" do
+            refute(tested)
+          end
+        end
 
         context "some_other_attribute => yet_another_attribute" do
           passed = fixture.test_session.test_passed?('some_other_attribute => yet_another_attribute')

@@ -3,7 +3,7 @@ require_relative '../interactive_init'
 context "Equality" do
   context "Not Equal" do
     control = Controls::Schema.example
-    compare = Controls::Schema.other_example
+    compare = Controls::Schema.example
 
     compare.some_other_attribute = Controls::Attribute::Value.random
 
