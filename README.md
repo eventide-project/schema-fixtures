@@ -103,6 +103,8 @@ end
 ruby test/equal.rb
 ```
 
+#### Failed Tests and Detailed Output
+
 When a test within a fixture fails, the fixture's detailed output will print irrespective of the value of the `TEST_BENCH_DETAIL` environment variable.
 
 ```
@@ -365,6 +367,8 @@ Assigned
         Assigned Value: nil
         /schema-fixtures/lib/schema/fixtures/assignment.rb:30:in `block (4 levels) in call': Assertion failed (TestBench::Fixture::AssertionFailure)
 ```
+
+Note that when a test within a fixture fails, the fixture's detailed output will print irrespective of the value of the `TEST_BENCH_DETAIL` environment variable.
 
 #### Determination of Assignment and Default Values
 
