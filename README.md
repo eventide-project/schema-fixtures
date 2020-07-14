@@ -2,7 +2,7 @@
 
 [TestBench](http://test-bench.software/) fixtures for the [Schema](https://github.com/eventide-project/schema) library
 
-The Schema Fixture library provides two [TestBench test fixtures](http://test-bench.software/user-guide/fixtures.html) for working with objects that are implementations of `Schema`, including `Schema::DataStructure`, and other implementations in other libraries, such as message objects based on the Eventide Project's `Messaging::Message`.
+The Schema Fixtures library provides [TestBench test fixtures](http://test-bench.software/user-guide/fixtures.html) for working with objects that are implementations of `Schema`, including `Schema::DataStructure`, and other implementations in other libraries, such as message objects based on the Eventide Project's `Messaging::Message`.
 
 ## Fixtures
 
