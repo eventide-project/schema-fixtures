@@ -1,3 +1,7 @@
 require 'schema/controls'
 
-Controls = Schema::Controls
+module Schema
+  module Fixtures
+    Controls = Schema::Controls
+  end
+end
