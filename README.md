@@ -372,7 +372,7 @@ Note that when a test within a fixture fails, the fixture's detailed output will
 
 #### Determination of Assignment and Default Values
 
-Am attribute is determined to have been assigned a value if the attribute's value is no longer equal to its default value.
+An attribute is determined to have been assigned a value if the attribute's value is no longer equal to its default value.
 
 An attribute's default value may be defined as something other than `nil`.
 
@@ -455,7 +455,7 @@ self.build(schema, attribute_names=[])
 | Name | Description | Type | Default |
 | --- | --- | --- | --- |
 | schema | The schema object whose attributes will be tested for assignment | Schema |
-| attribute_names | Optional list of attribute names to limit testing to | Array of Symbol | Attribute names of teh schema object |
+| attribute_names | Optional list of attribute names to limit testing to | Array of Symbol | Attribute names of the schema object |
 
 #### Actuating the Fixture
 
