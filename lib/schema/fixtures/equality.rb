@@ -28,7 +28,7 @@ module Schema
               assert(control_class == compare_class)
             end
           else
-            comment 'Class comparison is ignored'
+            detail 'Class comparison is ignored'
           end
 
           context "Attributes" do
