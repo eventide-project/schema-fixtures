@@ -1,7 +1,7 @@
 puts RUBY_DESCRIPTION
 
 puts
-puts "TEST_BENCH_VERBOSE: #{ENV['TEST_BENCH_VERBOSE'].inspect}"
+puts "TEST_BENCH_DETAIL: #{ENV['TEST_BENCH_DETAIL'].inspect}"
 puts
 
 require_relative '../init.rb'
