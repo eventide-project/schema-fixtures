@@ -2,7 +2,7 @@
 
 [TestBench](http://test-bench.software/) fixtures for the [Schema](https://github.com/eventide-project/schema) library
 
-The Schema Fixtures library provides [TestBench test fixtures](http://test-bench.software/user-guide/fixtures.html) for working with objects that are implementations of `Schema`, including `Schema::DataStructure`, and other implementations in other libraries, such as message objects based on the Eventide Project's `Messaging::Message`.
+The Schema Fixtures library provides [TestBench test fixtures](http://test-bench.software/user-guide/fixtures.html) for testing objects that are implementations of Eventide's `Schema`, including `Schema::DataStructure`, and other implementations in other libraries, such as message objects based on the Eventide Project's `Messaging::Message`.
 
 ## Fixtures
 
@@ -12,7 +12,7 @@ A fixture is just a plain old Ruby object that includes the TestBench API. A fix
 
 ## Equality Fixture
 
-The `Schema::Fixtures::Equality` fixture tests the equality of two instances of a schema object. It optionally tests that the classes of each schema object are the same class, and tests that the attributes of the schema instances have the same values. The attributes tested can be limited to a subset of attributes by specifying a list of attribute names, and a map can be provided to compare different attributes to each other.
+The `Schema::Fixtures::Equality` fixture tests the equality of two instances of a schema object. It optionally tests that the classes of each schema object are the same class, and tests that the attributes of the schema instances have the same values. The attributes tested can be limited to a subset of attributes by specifying a list of attribute names, and a map can be provided to compare attributes of different names that represent the same value.
 
 ``` ruby
 module Something
@@ -279,7 +279,7 @@ self.build(control, compare, attribute_names=[], ignore_class: false)
 
 **Returns**
 
-`Schema::Fixtures::Equality`
+Instance of `Schema::Fixtures::Equality`
 
 **Parameters**
 
