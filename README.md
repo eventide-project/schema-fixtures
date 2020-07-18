@@ -273,6 +273,8 @@ Class: `Schema::Fixtures::Equality`
 
 #### Construct the Equality Fixture
 
+The equality fixture is only ever constructed directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema equality, TestBench's `fixture` method is used.
+
 ``` ruby
 self.build(control, compare, attribute_names=[], ignore_class: false)
 ```
@@ -291,6 +293,8 @@ Instance of `Schema::Fixtures::Equality`
 | ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | false |
 
 #### Actuating the Fixture
+
+The equality fixture is only ever actuated directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema equality, TestBench's `fixture` method is used.
 
 ``` ruby
 call()
@@ -442,6 +446,8 @@ Class: `Schema::Fixtures::Assignment`
 
 #### Construct the Assignment Fixture
 
+The assignment fixture is only ever constructed directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema assignment, TestBench's `fixture` method is used.
+
 ``` ruby
 self.build(schema, attribute_names=[])
 ```
@@ -458,6 +464,8 @@ self.build(schema, attribute_names=[])
 | attribute_names | Optional list of attribute names to limit testing to | Array of Symbol | Attribute names of the schema object |
 
 #### Actuating the Fixture
+
+The assignment fixture is only ever actuated directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema assignment, TestBench's `fixture` method is used.
 
 ``` ruby
 call()
