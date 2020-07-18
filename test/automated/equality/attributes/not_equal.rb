@@ -1,28 +1,30 @@
 require_relative '../../automated_init'
 
 context "Equality" do
-  context "Not Equal" do
-    control = Controls::Schema.example
-    compare = Controls::Schema.example
+  context "Attributes" do
+    context "Not Equal" do
+      control = Controls::Schema.example
+      compare = Controls::Schema.example
 
-    compare.some_other_attribute = Controls::Attribute::Value.random
+      compare.some_other_attribute = Controls::Attribute::Value.random
 
-    fixture = Equality.build(control, compare)
-    fixture.()
+      fixture = Equality.build(control, compare)
+      fixture.()
 
-    context "some_attribute" do
-      passed = fixture.test_session.test_passed?('some_attribute')
+      context "some_attribute" do
+        passed = fixture.test_session.test_passed?('some_attribute')
 
-      test "Passed" do
-        assert(passed)
+        test "Passed" do
+          assert(passed)
+        end
       end
-    end
 
-    context "some_other_attribute" do
-      passed = fixture.test_session.test_failed?('some_other_attribute')
+      context "some_other_attribute" do
+        passed = fixture.test_session.test_failed?('some_other_attribute')
 
-      test "Failed" do
-        assert(passed)
+        test "Failed" do
+          assert(passed)
+        end
       end
     end
   end
