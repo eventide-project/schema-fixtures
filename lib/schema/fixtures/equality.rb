@@ -8,18 +8,22 @@ module Schema
         @ignore_class ||= false
       end
 
-      def print_title?
-        if @print_title.nil?
-          @print_title = true
+      def print_title_context?
+        if @print_title_context.nil?
+          @print_title_context = true
         end
-        @print_title
+        @print_title_context
       end
 
-      initializer :comparison, na(:ignore_class), na(:print_title)
+      def attributes_context_name
+        @attributes_context_name ||= 'Attributes'
+      end
 
-      def self.build(control, compare, attribute_names=nil, ignore_class: nil, print_title: nil)
+      initializer :comparison, na(:ignore_class), na(:print_title_context), na(:attributes_context_name)
+
+      def self.build(control, compare, attribute_names=nil, ignore_class: nil, print_title_context: nil, attributes_context_name: nil)
         comparison = Schema::Compare.(control, compare, attribute_names)
-        new(comparison, ignore_class, print_title)
+        new(comparison, ignore_class, print_title_context, attributes_context_name)
       end
 
       def call()
@@ -27,7 +31,7 @@ module Schema
         compare_class = comparison.compare_class
 
         test_attributes = proc do
-          context "Attributes" do
+          context attributes_context_name do
             comparison.entries.each do |entry|
               printed_attribute_name = Attribute.printed_name(entry)
 
@@ -44,7 +48,7 @@ module Schema
           end
         end
 
-        if print_title?
+        if print_title_context?
           context "Schema Equality: #{control_class.type}, #{compare_class.type}" do
             detail "Control Class: #{control_class.name}"
             detail "Compare Class: #{compare_class.name}"

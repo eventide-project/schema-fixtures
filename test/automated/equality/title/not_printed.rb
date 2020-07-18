@@ -6,7 +6,7 @@ context "Equality" do
       control = Controls::Schema.example
       compare = Controls::Schema.example
 
-      fixture = Equality.build(control, compare, print_title: false)
+      fixture = Equality.build(control, compare, print_title_context: false)
       fixture.()
 
       context "Schema Equality Context" do
