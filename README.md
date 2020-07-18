@@ -54,7 +54,7 @@ Equal
       some_other_attribute
 ```
 
-The output from the "Schema Equality" line-downward is from the Equality fixture.
+The output from the "Schema Equality" line-downward is from the equality fixture.
 
 ### Detailed Output
 
