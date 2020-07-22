@@ -10,7 +10,7 @@ context "Equality" do
       fixture.()
 
       context "Schema Equality Context" do
-        printed = fixture.test_session.context?("Schema Equality: Example, Example")
+        printed = fixture.test_session.context?('Schema Equality: Example, Example')
 
         test "Printed" do
           assert(printed)
