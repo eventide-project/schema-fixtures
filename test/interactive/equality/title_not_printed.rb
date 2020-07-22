@@ -5,6 +5,6 @@ context "Equality" do
     control = Controls::Schema.example
     compare = Controls::Schema.example
 
-    fixture(Equality, control, compare, print_title: false)
+    fixture(Equality, control, compare, print_title_context: false)
   end
 end
