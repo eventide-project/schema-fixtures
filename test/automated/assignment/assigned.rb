@@ -11,6 +11,8 @@ context "Assignment" do
     fixture.()
 
     schema.class.attribute_names.each do |attribute_name|
+      attribute_name = attribute_name.to_s
+
       context attribute_name do
         passed = fixture.test_session.test_passed?(attribute_name)
 

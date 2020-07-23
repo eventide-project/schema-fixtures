@@ -16,8 +16,8 @@ context "Equality" do
         fixture = Equality.build(control, compare, list)
         fixture.()
 
-        context "#{control_name}" do
-          failed = fixture.test_session.test_failed?(control_name)
+        context control_name.to_s do
+          failed = fixture.test_session.test_failed?(control_name.to_s)
 
           test "Failed" do
             assert(failed)

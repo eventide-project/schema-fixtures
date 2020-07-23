@@ -11,8 +11,8 @@ context "Assignment" do
     fixture = Assignment.build(schema, [control_name])
     fixture.()
 
-    context "#{control_name}" do
-      passed = fixture.test_session.test_passed?(control_name)
+    context control_name.to_s do
+      passed = fixture.test_session.test_passed?(control_name.to_s)
 
       test "Passed" do
         assert(passed)

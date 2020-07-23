@@ -14,8 +14,8 @@ context "Equality" do
         fixture = Equality.build(control, compare, list)
         fixture.()
 
-        context "#{control_name}" do
-          passed = fixture.test_session.test_passed?(control_name)
+        context control_name.to_s do
+          passed = fixture.test_session.test_passed?(control_name.to_s)
 
           test "Passed" do
             assert(passed)
