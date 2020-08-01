@@ -15,15 +15,19 @@ module Schema
         @print_title_context
       end
 
+      def title_context_name
+        @title_context_name ||= "Schema Equality: #{comparison.control_class.type}, #{comparison.compare_class.type}"
+      end
+
       def attributes_context_name
         @attributes_context_name ||= 'Attributes'
       end
 
-      initializer :comparison, na(:ignore_class), na(:print_title_context), na(:attributes_context_name)
+      initializer :comparison, na(:ignore_class), na(:print_title_context), na(:title_context_name), na(:attributes_context_name)
 
-      def self.build(control, compare, attribute_names=nil, ignore_class: nil, print_title_context: nil, attributes_context_name: nil)
+      def self.build(control, compare, attribute_names=nil, ignore_class: nil, print_title_context: nil, title_context_name: nil, attributes_context_name: nil)
         comparison = Schema::Compare.(control, compare, attribute_names)
-        new(comparison, ignore_class, print_title_context, attributes_context_name)
+        new(comparison, ignore_class, print_title_context, title_context_name, attributes_context_name)
       end
 
       def call()
@@ -49,7 +53,7 @@ module Schema
         end
 
         if print_title_context?
-          context "Schema Equality: #{control_class.type}, #{compare_class.type}" do
+          context "#{title_context_name}" do
             detail "Control Class: #{control_class.name}"
             detail "Compare Class: #{compare_class.name}"
 
