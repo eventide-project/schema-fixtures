@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.name = 'evt-schema-fixtures'
   s.summary = "TestBench fixtures for the Schema library"
-  s.version = '0.0.0.0'
+  s.version = '0.0.0.1'
   s.description = ' '
 
   s.authors = ['The Eventide Project']
