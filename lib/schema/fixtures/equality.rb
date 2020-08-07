@@ -57,7 +57,7 @@ module Schema
             assert(control_class == compare_class)
           end
         else
-          detail 'Class comparison is ignored'
+          detail 'Schema class equality check is not enabled'
         end
 
         context attributes_context_name do
