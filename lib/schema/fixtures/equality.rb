@@ -56,8 +56,6 @@ module Schema
           test "Classes are the same" do
             assert(control_class == compare_class)
           end
-        else
-          detail 'Schema class equality check is not enabled'
         end
 
         context attributes_context_name do
