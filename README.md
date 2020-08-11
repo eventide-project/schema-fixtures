@@ -471,6 +471,12 @@ The assignment fixture is only ever actuated directly when [testing](http://test
 call()
 ```
 
+## More Documentation
+
+More detailed documentation on the fixtures and their APIs can be found in the test fixtures user guide on the Eventide documentation site:
+
+[http://docs.eventide-project.org/user-guide/test-fixtures/](http://docs.eventide-project.org/user-guide/test-fixtures/)
+
 ## License
 
 The `schema-fixtures` library is released under the [MIT License](https://github.com/eventide-project/schema-fixtures/blob/master/MIT-License.txt).
