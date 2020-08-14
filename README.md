@@ -45,7 +45,7 @@ ruby test/equal.rb
 
 The test script and the fixture work together as if they are the same test.
 
-```
+``` text
 Equal
   Schema Equality: Example, Example
     Classes are the same
@@ -64,7 +64,7 @@ The fixture will print more detailed output if the `TEST_BENCH_DETAIL` environme
 TEST_BENCH_DETAIL=on ruby test/equal.rb
 ```
 
-```
+``` text
 Equal
   Schema Equality: Example, Example
     Control Class: Something::Example
@@ -107,7 +107,7 @@ ruby test/equal.rb
 
 When a test within a fixture fails, the fixture's detailed output will print irrespective of the value of the `TEST_BENCH_DETAIL` environment variable.
 
-```
+``` text
 Equal
   Schema Equality: Example, Example
     Control Class: Something::Example
@@ -143,7 +143,7 @@ context 'Equal' do
 end
 ```
 
-```
+``` text
 Equal
   Schema Equality: Example, Example
     Classes are the same
@@ -180,7 +180,7 @@ context 'Equal' do
 end
 ```
 
-```
+``` text
 Equal
   Schema Equality: Example, OtherExample
     Attributes
@@ -206,7 +206,7 @@ context 'Equal' do
 end
 ```
 
-```
+``` text
 Equal
   Schema Equality: Example, OtherExample
     Control Class: Something::Example
@@ -256,7 +256,7 @@ context 'Equal' do
 end
 ```
 
-```
+``` text
 Equal
   Schema Equality: Example, YetAnotherExample
     Class comparison is ignored
@@ -271,17 +271,15 @@ Note that when an attribute map is used, the attribute name printed by the fixtu
 
 Class: `Schema::Fixtures::Equality`
 
-#### Construct the Equality Fixture
+#### Actuating the Equality Fixture
 
-The equality fixture is only ever constructed directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema equality, TestBench's `fixture` method is used.
+The fixture is executed using TestBench's `fixture` method.
 
 ``` ruby
-self.build(control, compare, attribute_names=[], ignore_class: false)
+fixture(Schema::Fixtures::Equality, control, compare, attribute_names=[], ignore_class: false)
 ```
 
-**Returns**
-
-Instance of `Schema::Fixtures::Equality`
+The first argument sent to the `fixture` method is the `Schema::Fixtures::Equality` class. Subsequent arguments are the specific construction parameters of the equality fixture.
 
 **Parameters**
 
@@ -291,14 +289,6 @@ Instance of `Schema::Fixtures::Equality`
 | compare | Object to compare to the baseline | Schema |
 | attribute_names | Optional list of attribute names to limit testing to | Array of Symbol or Hash | Attribute names of left-hand side object |
 | ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | false |
-
-#### Actuating the Fixture
-
-The equality fixture is only ever actuated directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema equality, TestBench's `fixture` method is used.
-
-``` ruby
-call()
-```
 
 ## Assignment Fixture
 
@@ -314,7 +304,7 @@ context 'Assigned' do
 end
 ```
 
-```
+``` text
 Assigned
   Schema Assignment: Example
     Attributes
@@ -330,7 +320,7 @@ The fixture will print more detailed output if the `TEST_BENCH_DETAIL` environme
 TEST_BENCH_DETAIL=on ruby test/assigned.rb
 ```
 
-```
+``` text
 Assigned
   Schema Assignment: Example
     Class: Something::Example
@@ -357,7 +347,7 @@ context 'Assigned' do
 end
 ```
 
-```
+``` text
 Assigned
   Schema Assignment: Example
     Class: Something::Example
@@ -403,7 +393,7 @@ context 'Assigned' do
 end
 ```
 
-```
+``` text
 Assigned
   Schema Assignment: Example
     Class: DefaultValue::Example
@@ -433,28 +423,26 @@ context 'Equal' do
 end
 ```
 
-```
+``` text
 Assigned
   Schema Assignment: Example
     Attributes
       some_attribute
 ```
 
-### Equality Fixture API
+### Assignment Fixture API
 
 Class: `Schema::Fixtures::Assignment`
 
-#### Construct the Assignment Fixture
+#### Actuating the Assignment Fixture
 
-The assignment fixture is only ever constructed directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema assignment, TestBench's `fixture` method is used.
+The fixture is executed using TestBench's `fixture` method.
 
 ``` ruby
-self.build(schema, attribute_names=[])
+fixture(Schema::Fixtures::Assignment, schema, attribute_names=[])
 ```
 
-**Returns**
-
-`Schema::Fixtures::Assignment`
+The first argument sent to the `fixture` method is the `Schema::Fixtures::Assignment` class. Subsequent arguments are the specific construction parameters of the assignment fixture.
 
 **Parameters**
 
@@ -462,14 +450,6 @@ self.build(schema, attribute_names=[])
 | --- | --- | --- | --- |
 | schema | The schema object whose attributes will be tested for assignment | Schema |
 | attribute_names | Optional list of attribute names to limit testing to | Array of Symbol | Attribute names of the schema object |
-
-#### Actuating the Fixture
-
-The assignment fixture is only ever actuated directly when [testing](http://test-bench.software/user-guide/fixtures.html#testing-fixtures) the fixture. Usually, when the fixture is used to fulfill its purpose of testing schema assignment, TestBench's `fixture` method is used.
-
-``` ruby
-call()
-```
 
 ## More Documentation
 
@@ -479,4 +459,4 @@ More detailed documentation on the fixtures and their APIs can be found in the t
 
 ## License
 
-The `schema-fixtures` library is released under the [MIT License](https://github.com/eventide-project/schema-fixtures/blob/master/MIT-License.txt).
+The Schema Fixtures library is released under the [MIT License](https://github.com/eventide-project/schema-fixtures/blob/master/MIT-License.txt).
