@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = 'evt-schema-fixtures'
-  s.summary = "TestBench fixtures for the Schema library"
+  s.summary = 'TestBench fixtures for the Schema library'
   s.version = '1.0.0.0'
   s.description = ' '
 
