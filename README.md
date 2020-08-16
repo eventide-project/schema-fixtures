@@ -12,7 +12,9 @@ A fixture is just a plain old Ruby object that includes the TestBench API. A fix
 
 ## Equality Fixture
 
-The `Schema::Fixtures::Equality` fixture tests the equality of two instances of a schema object. It optionally tests that the classes of each schema object are the same class, and tests that the attributes of the schema instances have the same values. The attributes tested can be limited to a subset of attributes by specifying a list of attribute names, and a map can be provided to compare attributes of different names that represent the same value.
+The `Schema::Fixtures::Equality` fixture tests the comparison between to implementations of [Schema::DataStructure](https://github.com/eventide-project/schema), such as [messages](/user-guide/messages-and-message-data/messages.md) and [entities](/user-guide/entities.md).
+
+By default, all attributes from the control schema object are compared to the compare schema object attributes of the same name. An optional list of attribute names can be passed. When the list of attribute names is passed, only those attributes will be compared. The list of attribute names can also contain maps of attribute names for comparing values when the control object attribute name is not the same as the compare object attribute name.
 
 ``` ruby
 module Something
@@ -37,13 +39,19 @@ context 'Equal' do
 end
 ```
 
-Running the test is no different than [running any TestBench test](http://test-bench.software/user-guide/running-tests.html). In its simplest form, running the test is done by passing the test file name to the `ruby` executable.
+### Running the Fixture
+
+Running the test is no different than [running any TestBench test](http://test-bench.software/user-guide/running-tests.html).
+
+For example, given a test file named `schema_equality.rb` that uses the schema equality fixture, in a directory named `test`, the test is executed by passing the file name to the `ruby` executable.
 
 ``` bash
-ruby test/equal.rb
+ruby test/schema_equality.rb
 ```
 
-The test script and the fixture work together as if they are the same test.
+The test script and the fixture work together as if they are part of the same test context, preserving output nesting between the test script file and the test fixture.
+
+### Schema Equality Fixture Output
 
 ``` text
 Equal
@@ -58,10 +66,12 @@ The output from the "Schema Equality" line-downward is from the equality fixture
 
 ### Detailed Output
 
-The fixture will print more detailed output if the `TEST_BENCH_DETAIL` environment variable is set to `on`.
+In the event of any error or failed assertion, the test output will include additional detailed output that can be useful in understanding the context of the failure and the state of the fixture itself and the objects that it's testing.
+
+The detailed output can also be printed by setting the `TEST_BENCH_DETAIL` environment variable to `on`.
 
 ``` bash
-TEST_BENCH_DETAIL=on ruby test/equal.rb
+TEST_BENCH_DETAIL=on ruby test/schema_equality.rb
 ```
 
 ``` text
@@ -79,53 +89,31 @@ Equal
         Compare Value: "some other value"
 ```
 
-### Failed Tests
+### Actuating the Schema Equality Fixture
 
-The fixture will fail if any of the fixture's equality tests fail.
-
-When a test fails in the fixture, the effect is identical to a test failure in a TestBench test script.
+The fixture is executed using TestBench's `fixture` method.
 
 ``` ruby
-context 'Equal' do
-  example_1 = Something::Example.new
-  example_1.some_attribute = 'some value'
-  example_1.some_other_attribute = 'some other value'
-
-  example_2 = Something::Example.new
-  example_2.some_attribute = 'some value'
-  example_2.some_other_attribute = SecureRandom.hex
-
-  fixture(Equality, example_1, example_2)
-end
+fixture(Schema::Fixtures::Equality, control, compare, attribute_names=[], ignore_class: false)
 ```
 
-``` bash
-ruby test/equal.rb
-```
+The first argument sent to the `fixture` method is always the `Schema::Fixtures::Equality` class. Subsequent arguments are the specific construction parameters of the schema equality fixture.
 
-#### Failed Tests and Detailed Output
+An optional list of attribute names can be passed. When the list of attribute names is passed, only those attributes will be compared. The list of attribute names can also contain maps of attribute names for comparing values when the entity attribute name is not the same as the event attribute name.
 
-When a test within a fixture fails, the fixture's detailed output will print irrespective of the value of the `TEST_BENCH_DETAIL` environment variable.
+When the list of attribute names is not provided, it defaults to the attribute names of the control schema object.
 
-``` text
-Equal
-  Schema Equality: Example, Example
-    Control Class: Something::Example
-    Compare Class: Something::Example
-    Classes are the same
-    Attributes
-      some_attribute
-        Control Value: "some value"
-        Compare Value: "some value"
-      some_other_attribute
-        Control Value: "some other value"
-        Compare Value: "76e107f5496d45558944e8c609bec1d7"
-        /schema-fixtures/lib/schema/fixtures/equality.rb:45:in `block (4 levels) in call': Assertion failed (TestBench::Fixture::AssertionFailure)
-```
+**Parameters**
 
-### Limiting to Certain Attributes
+| Name | Description | Type |
+| --- | --- | --- |
+| control | Control schema object that is the baseline for the comparison | Schema |
+| compare | Schema object that is compared to the control object | Schema |
+| attribute_names | Optional list of attribute names to compare, or maps of event attribute name to entity attribute name | Array of Symbol or Hash |
 
-The Equality fixture can limit the attribute tests to a subset of attributes by specifying a list of attributes to test.
+### Limiting the Test to a Subset of Attributes
+
+The Equality fixture can limit the attribute tests to a subset of attributes by specifying a list of attributes names.
 
 ``` ruby
 context 'Equal' do
@@ -151,82 +139,11 @@ Equal
       some_attribute
 ```
 
-### Ignoring the Classes
-
-Instances of different schemas classes with the same attribute names can be compared to each other by specifying that the fixture ignore the schema objects' classes.
-
-``` ruby
-module Something
-  class OtherExample
-    include Schema
-
-    attribute :some_attribute
-    attribute :some_other_attribute
-  end
-end
-
-context 'Equal' do
-  example = Something::Example.new
-  example.some_attribute = 'some value'
-  example.some_other_attribute = 'some other value'
-
-  other_example = Something::OtherExample.new
-  other_example.some_attribute = 'some value'
-  other_example.some_other_attribute = 'some other value'
-
-  attribute_names = [:some_attribute]
-
-  fixture(Equality, example, other_example, ignore_class: true)
-end
-```
-
-``` text
-Equal
-  Schema Equality: Example, OtherExample
-    Attributes
-      some_attribute
-      some_other_attribute
-```
-
-If the `ignore_class` parameter is not `true`, and the two schema classes are not the same class, the fixture will fail.
-
-``` ruby
-context 'Equal' do
-  example = Something::Example.new
-  example.some_attribute = 'some value'
-  example.some_other_attribute = 'some other value'
-
-  other_example = Something::OtherExample.new
-  other_example.some_attribute = 'some value'
-  other_example.some_other_attribute = 'some other value'
-
-  attribute_names = [:some_attribute]
-
-  fixture(Equality, example, other_example)
-end
-```
-
-``` text
-Equal
-  Schema Equality: Example, OtherExample
-    Control Class: Something::Example
-    Compare Class: Something::OtherExample
-    Classes are the same
-      /schema-fixtures/lib/schema/fixtures/equality.rb:28:in `block (2 levels) in call': Assertion failed (TestBench::Fixture::AssertionFailure)
-    Attributes
-      some_attribute
-        Control Value: "some value"
-        Compare Value: "some value"
-      some_other_attribute
-        Control Value: "some other value"
-        Compare Value: "some other value"
-```
-
-Note: The default value of the `ignore_class` parameter `false`. Unless it's explicitly set to `true`, the classes will always be tested.
-
-### Comparing Different Schemas Using a Map
+### Comparing Different Attribute Names Using a Map
 
 The equality of the attribute values of two different schema classes that have different attribute names that represent the same values can be tested using a map of the attribute names.
+
+The typical use case for this is the comparison of schema objects of different classes with different attribute names. In this case, the `ignore_class: true` argument usually accompanies a map of attribute names.
 
 ``` ruby
 module Something
@@ -267,42 +184,76 @@ Equal
 
 Note that when an attribute map is used, the attribute name printed by the fixture is the pair of mapped attributes.
 
-### Equality Fixture API
+### Ignoring the Class Comparison
 
-Class: `Schema::Fixtures::Equality`
+By default, when two schema objects are compared, if the objects have different classes, they're not considered equal unless the class comparison is disabled.
 
-#### Actuating the Equality Fixture
-
-The fixture is executed using TestBench's `fixture` method.
+The class comparison can be disabled by passing `true` as the value of the `ignore_class` keyword argument.
 
 ``` ruby
-fixture(Schema::Fixtures::Equality, control, compare, attribute_names=[], ignore_class: false)
+module Something
+  class OtherExample
+    include Schema
+
+    attribute :some_attribute
+    attribute :some_other_attribute
+  end
+end
+
+context 'Equal' do
+  example = Something::Example.new
+  example.some_attribute = 'some value'
+  example.some_other_attribute = 'some other value'
+
+  other_example = Something::OtherExample.new
+  other_example.some_attribute = 'some value'
+  other_example.some_other_attribute = 'some other value'
+
+  attribute_names = [:some_attribute]
+
+  fixture(Equality, example, other_example, ignore_class: true)
+end
 ```
 
-The first argument sent to the `fixture` method is the `Schema::Fixtures::Equality` class. Subsequent arguments are the specific construction parameters of the equality fixture.
-
-**Parameters**
-
-| Name | Description | Type | Default |
-| --- | --- | --- | --- |
-| control | Baseline object for comparison | Schema |
-| compare | Object to compare to the baseline | Schema |
-| attribute_names | Optional list of attribute names to limit testing to | Array of Symbol or Hash | Attribute names of left-hand side object |
-| ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | false |
+``` text
+Equal
+  Schema Equality: Example, OtherExample
+    Attributes
+      some_attribute
+      some_other_attribute
+```
 
 ## Assignment Fixture
 
-The `Schema::Fixtures::Assignment` fixture tests that a schema instance's attributes have been assigned a value. The attributes tested can be limited to a subset of attributes by specifying a list of attribute names.
+The `Schema::Fixtures::Assignment` fixture tests that a schema instance's attributes have been assigned a value. The fixture is used to make sure that a schema object's attributes have been mutated in the course of some procedure.
+
+If an attribute is declared with a default value, then the attribute must have been assigned another value for it to be considered mutated.
+
+By default, all of schema object's attributes are asserted to have been mutated. An optional list of attribute names can be passed. When the list of attribute names is passed, only those attributes will be compared.
 
 ``` ruby
 context 'Assigned' do
-  example = Something::Example.new
+  example = Something.new
   example.some_attribute = 'some value'
   example.some_other_attribute = 'some other value'
 
   fixture(Assignment, example)
 end
 ```
+
+### Running the Fixture
+
+Running the test is no different than [running any TestBench test](http://test-bench.software/user-guide/running-tests.html).
+
+For example, given a test file named `schema_assignment.rb` that uses the schema assignment fixture, in a directory named `test`, the test is executed by passing the file name to the `ruby` executable.
+
+``` bash
+ruby test/schema_assignment.rb
+```
+
+The test script and the fixture work together as if they are part of the same test context, preserving output nesting between the test script file and the test fixture.
+
+### Schema Assignment Fixture Output
 
 ``` text
 Assigned
@@ -314,10 +265,12 @@ Assigned
 
 ### Detailed Output
 
-The fixture will print more detailed output if the `TEST_BENCH_DETAIL` environment variable is set to `on`.
+In the event of any error or failed assertion, the test output will include additional detailed output that can be useful in understanding the context of the failure and the state of the fixture itself and the objects that it's testing.
+
+The detailed output can also be printed by setting the `TEST_BENCH_DETAIL` environment variable to `on`.
 
 ``` bash
-TEST_BENCH_DETAIL=on ruby test/assigned.rb
+TEST_BENCH_DETAIL=on ruby test/schema_assignment.rb
 ```
 
 ``` text
@@ -333,38 +286,48 @@ Assigned
         Assigned Value: "some other value"
 ```
 
-### Failed Tests
+### Actuating the Assignment Fixture
 
-The fixture will fail if any of the fixture's assignment tests fail.
-
-When a test fails in the fixture, the effect is identical to a test failure in a TestBench test script.
+The fixture is executed using TestBench's `fixture` method.
 
 ``` ruby
-context 'Assigned' do
-  example = Something::Example.new
+fixture(Schema::Fixtures::Assignment, schema, attribute_names=[])
+```
 
-  fixture(Assignment, example)
+The first argument sent to the `fixture` method is always the `Schema::Fixtures::Assignment` class. Subsequent arguments are the specific construction parameters of the assignment fixture.
+
+When the list of attribute names is not provided, it defaults to all of the attribute names of the schema object.
+
+**Parameters**
+
+| Name | Description | Type |
+| --- | --- | --- | --- |
+| schema | The schema object whose attributes will be tested for assignment | Schema |
+| attribute_names | Optional list of attribute names to check for assignment | Array of Symbol |
+
+### Limiting the Test to a Subset of Attributes
+
+The Assignment fixture can limit the attribute tests to a subset of attributes by specifying a list of attribute names.
+
+``` ruby
+context 'Equal' do
+  example = Something::Example.new
+  example.some_attribute = 'some value'
+
+  attribute_names = [:some_attribute]
+
+  fixture(Assignment, example, attribute_names)
 end
 ```
 
 ``` text
 Assigned
   Schema Assignment: Example
-    Class: Something::Example
     Attributes
       some_attribute
-        Default Value: nil
-        Assigned Value: nil
-        /schema-fixtures/lib/schema/fixtures/assignment.rb:30:in `block (4 levels) in call': Assertion failed (TestBench::Fixture::AssertionFailure)
-      some_other_attribute
-        Default Value: nil
-        Assigned Value: nil
-        /schema-fixtures/lib/schema/fixtures/assignment.rb:30:in `block (4 levels) in call': Assertion failed (TestBench::Fixture::AssertionFailure)
 ```
 
-Note that when a test within a fixture fails, the fixture's detailed output will print irrespective of the value of the `TEST_BENCH_DETAIL` environment variable.
-
-#### Determination of Assignment and Default Values
+### Determination of Assignment and Default Values
 
 An attribute is determined to have been assigned a value if the attribute's value is no longer equal to its default value.
 
@@ -407,49 +370,6 @@ Assigned
         Assigned Value: nil
         /schema-fixtures/lib/schema/fixtures/assignment.rb:30:in `block (4 levels) in call': Assertion failed (TestBench::Fixture::AssertionFailure)
 ```
-
-### Limiting to Certain Attributes
-
-The Assignment fixture can limit the attribute tests to a subset of attributes by specifying a list of attributes to test.
-
-``` ruby
-context 'Equal' do
-  example = Something::Example.new
-  example.some_attribute = 'some value'
-
-  attribute_names = [:some_attribute]
-
-  fixture(Assignment, example, attribute_names)
-end
-```
-
-``` text
-Assigned
-  Schema Assignment: Example
-    Attributes
-      some_attribute
-```
-
-### Assignment Fixture API
-
-Class: `Schema::Fixtures::Assignment`
-
-#### Actuating the Assignment Fixture
-
-The fixture is executed using TestBench's `fixture` method.
-
-``` ruby
-fixture(Schema::Fixtures::Assignment, schema, attribute_names=[])
-```
-
-The first argument sent to the `fixture` method is the `Schema::Fixtures::Assignment` class. Subsequent arguments are the specific construction parameters of the assignment fixture.
-
-**Parameters**
-
-| Name | Description | Type | Default |
-| --- | --- | --- | --- |
-| schema | The schema object whose attributes will be tested for assignment | Schema |
-| attribute_names | Optional list of attribute names to limit testing to | Array of Symbol | Attribute names of the schema object |
 
 ## More Documentation
 
