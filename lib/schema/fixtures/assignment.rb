@@ -50,8 +50,8 @@ module Schema
             attribute_value = entry.compare_value
 
             test "#{entry.compare_name}" do
-              detail "Default Value: #{default_attribute_value.pretty_inspect}"
-              detail "Assigned Value: #{attribute_value.pretty_inspect}"
+              detail "Default Value: #{default_attribute_value.pretty_inspect.chomp}"
+              detail "Assigned Value: #{attribute_value.pretty_inspect.chomp}"
 
               refute(attribute_value == default_attribute_value)
             end
