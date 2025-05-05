@@ -1,4 +1,4 @@
-require_relative '../interactive_init'
+require_relative "../interactive_init"
 
 context "Assignment" do
   context "Attributes Context Name" do
@@ -7,6 +7,6 @@ context "Assignment" do
     schema.some_attribute = Controls::Attribute::Value.random
     schema.some_other_attribute = Controls::Attribute::Value.random
 
-    fixture(Assignment, schema, attributes_context_name: 'Other Attributes Context Name')
+    fixture(Assignment, schema, attributes_context_name: "Other Attributes Context Name")
   end
 end

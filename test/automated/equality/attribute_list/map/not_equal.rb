@@ -1,4 +1,4 @@
-require_relative '../../../automated_init'
+require_relative "../../../automated_init"
 
 context "Equality" do
   context "Attribute List" do
@@ -20,7 +20,7 @@ context "Equality" do
         fixture.()
 
         context "Classes are the same" do
-          tested = fixture.test_session.test?('Classes are the same')
+          tested = fixture.test_session.test?("Classes are the same")
 
           test "Not tested" do
             refute(tested)
@@ -28,7 +28,7 @@ context "Equality" do
         end
 
         context "some_other_attribute => yet_another_attribute" do
-          failed = fixture.test_session.test_failed?('some_other_attribute => yet_another_attribute')
+          failed = fixture.test_session.test_failed?("some_other_attribute => yet_another_attribute")
 
           test "Failed" do
             assert(failed)
@@ -36,7 +36,7 @@ context "Equality" do
         end
 
         context "some_attribute" do
-          tested = fixture.test_session.test?('some_attribute')
+          tested = fixture.test_session.test?("some_attribute")
 
           test "Not tested" do
             refute(tested)

@@ -1,4 +1,4 @@
-require_relative '../automated_init'
+require_relative "../automated_init"
 
 context "Assignment" do
   context "List" do
@@ -20,7 +20,7 @@ context "Assignment" do
     end
 
     context "some_other_attribute" do
-      tested = fixture.test_session.test?('some_other_attribute')
+      tested = fixture.test_session.test?("some_other_attribute")
 
       test "Not tested" do
         refute(tested)

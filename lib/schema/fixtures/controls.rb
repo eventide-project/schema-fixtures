@@ -1,4 +1,4 @@
-require 'schema/controls'
+require "schema/controls"
 
 module Schema
   module Fixtures
