@@ -1,4 +1,4 @@
-require_relative '../../../automated_init'
+require_relative "../../../automated_init"
 
 context "Equality" do
   context "Attribute List" do
@@ -23,7 +23,7 @@ context "Equality" do
         end
 
         context "some_other_attribute" do
-          tested = fixture.test_session.test?('some_other_attribute')
+          tested = fixture.test_session.test?("some_other_attribute")
 
           test "Not tested" do
             refute(tested)

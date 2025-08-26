@@ -1,4 +1,4 @@
-require_relative '../interactive_init'
+require_relative "../interactive_init"
 
 context "Assignment" do
   context "Title Not Printed" do

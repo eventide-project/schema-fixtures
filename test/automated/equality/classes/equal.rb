@@ -1,4 +1,4 @@
-require_relative '../../automated_init'
+require_relative "../../automated_init"
 
 context "Equality" do
   context "Classes" do
@@ -9,7 +9,7 @@ context "Equality" do
       fixture = Equality.build(control, compare)
       fixture.()
 
-      passed = fixture.test_session.test_passed?('Classes are the same')
+      passed = fixture.test_session.test_passed?("Classes are the same")
 
       test "Passed" do
         assert(passed)

@@ -1,4 +1,4 @@
-require_relative '../../automated_init'
+require_relative "../../automated_init"
 
 context "Equality" do
   context "Attributes" do
@@ -12,7 +12,7 @@ context "Equality" do
       fixture.()
 
       context "some_attribute" do
-        passed = fixture.test_session.test_passed?('some_attribute')
+        passed = fixture.test_session.test_passed?("some_attribute")
 
         test "Passed" do
           assert(passed)
@@ -20,7 +20,7 @@ context "Equality" do
       end
 
       context "some_other_attribute" do
-        passed = fixture.test_session.test_failed?('some_other_attribute')
+        passed = fixture.test_session.test_failed?("some_other_attribute")
 
         test "Failed" do
           assert(passed)

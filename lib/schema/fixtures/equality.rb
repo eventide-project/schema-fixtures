@@ -20,7 +20,7 @@ module Schema
       end
 
       def attributes_context_name
-        @attributes_context_name ||= 'Attributes'
+        @attributes_context_name ||= "Attributes"
       end
 
       def control_class
@@ -66,8 +66,8 @@ module Schema
             compare_attribute_value = entry.compare_value
 
             test printed_attribute_name do
-              detail "#{control_class.name.split('::').last} Value: #{control_attribute_value.pretty_inspect.chomp}"
-              detail "#{compare_class.name.split('::').last} Value: #{compare_attribute_value.pretty_inspect.chomp}"
+              detail "#{control_class.name.split("::").last} Value: #{control_attribute_value.pretty_inspect.chomp}"
+              detail "#{compare_class.name.split("::").last} Value: #{compare_attribute_value.pretty_inspect.chomp}"
 
               assert(compare_attribute_value == control_attribute_value)
             end

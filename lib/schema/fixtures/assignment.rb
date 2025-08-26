@@ -16,7 +16,7 @@ module Schema
       end
 
       def attributes_context_name
-        @attributes_context_name ||= 'Attributes'
+        @attributes_context_name ||= "Attributes"
       end
 
       def schema_class
